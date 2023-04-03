@@ -11,6 +11,7 @@ export interface Todo {
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [newTodo, setNewTodo] = useState<string>("");
   //state for current todos, TODO use localstorage to store the list
 
   //on load, gets the todos from local storage
@@ -31,11 +32,7 @@ function App() {
 
   //add a todo item to the list given a string for the task
   const addTodo = (newTask: string) => {
-    if (
-      todos.find((t) => {
-        t.task === newTask;
-      })
-    ) {
+    if (todos.find((t) => t.task === newTask)) {
       return;
     } else {
       const today = new Date();
@@ -44,12 +41,11 @@ function App() {
         dateCreated: today,
         isChecked: false,
       };
-
       setTodos([...todos, newTodo]);
     }
   };
 
-  //todo add the ability to tick off todos on the list
+  //toggle checked on a todo on the list, given the task string to find it.
   const checkTodo = (checkTask: string) => {
     let newTodos = todos.slice();
     const checkIndex = todos.findIndex((t) => t.task === checkTask);
@@ -57,7 +53,7 @@ function App() {
     setTodos([...newTodos]);
   };
 
-  //delete/edit a todo on the list given the id of it
+  //delete a todo on the list given the id of it
   const deleteTodo = (deleteTask: string) => {
     let newTodos = todos.slice();
     const deleteIndex = newTodos.findIndex((t) => t.task === deleteTask);
@@ -65,11 +61,15 @@ function App() {
     setTodos(newTodos);
   };
 
+  const handleChangeNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTodo(e.currentTarget.value);
+  };
+
   return (
     <div className="App">
       <div className="title">To Do List</div>
       <div className="todoList">
-        box for todo list
+        {todos.length === 0 && "Nothing to do!"}
         {todos.map((t) => (
           <TodoCard
             key={t.task}
@@ -79,13 +79,16 @@ function App() {
           />
         ))}
       </div>
-      <button
-        onClick={() => {
-          addTodo("test");
-        }}
-      >
-        Add
-      </button>
+      <div>
+        <input id="taskInput" value={newTodo} onChange={handleChangeNewTodo} />
+        <button
+          onClick={() => {
+            addTodo(newTodo);
+          }}
+        >
+          Add
+        </button>
+      </div>
     </div>
   );
 }

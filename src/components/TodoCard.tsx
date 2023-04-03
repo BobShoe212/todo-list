@@ -16,9 +16,12 @@ export default function TodoCard(props: {
 
   return (
     <div className="todocard">
-      <button onClick={handleCheck}>{props.todo.isChecked ? "X" : "O"}</button>
+      <button
+        onClick={handleCheck}
+        className={props.todo.isChecked ? "checked" : "unchecked"}
+      ></button>
       <div className="todocard-info">
-        <h2>{props.todo.task}</h2>
+        <h3>{props.todo.task}</h3>
         <span>
           {props.todo.dateCreated.getDate()}-{props.todo.dateCreated.getMonth()}
           -{props.todo.dateCreated.getFullYear()}
