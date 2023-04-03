@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import { v4 as uuid } from 'uuid';
-import TodoCard from './components/TodoCard';
+import { useState, useEffect } from "react";
+import "./App.css";
+import TodoCard from "./components/TodoCard";
 
 //interface for the todo items that will be stored
 export interface Todo {
-  id: string;
   task: string;
   dateCreated: Date;
   isChecked: boolean;
@@ -33,32 +31,36 @@ function App() {
 
   //add a todo item to the list given a string for the task
   const addTodo = (newTask: string) => {
-    const today = new Date();
-    let newTodo = {
-      id: uuid(),
-      task: newTask,
-      dateCreated: today,
-      isChecked: false,
-    };
-    setTodos([...todos, newTodo]);
+    if (
+      todos.find((t) => {
+        t.task === newTask;
+      })
+    ) {
+      return;
+    } else {
+      const today = new Date();
+      let newTodo = {
+        task: newTask,
+        dateCreated: today,
+        isChecked: false,
+      };
+
+      setTodos([...todos, newTodo]);
+    }
   };
 
   //todo add the ability to tick off todos on the list
-  const checkTodo = (id: string) => {
+  const checkTodo = (checkTask: string) => {
     let newTodos = todos.slice();
-    const checkIndex = newTodos.findIndex((t) => {
-      t.id === id;
-    });
-    //TODO change the isCHecked boolean of newTodos[checkIndex]
+    const checkIndex = todos.findIndex((t) => t.task === checkTask);
+    newTodos[checkIndex].isChecked = !newTodos[checkIndex].isChecked;
     setTodos([...newTodos]);
   };
 
   //delete/edit a todo on the list given the id of it
-  const deleteTodo = (id: string) => {
+  const deleteTodo = (deleteTask: string) => {
     let newTodos = todos.slice();
-    const deleteIndex = newTodos.findIndex((t) => {
-      t.id === id;
-    });
+    const deleteIndex = newTodos.findIndex((t) => t.task === deleteTask);
     newTodos.splice(deleteIndex, 1);
     setTodos(newTodos);
   };
@@ -70,7 +72,7 @@ function App() {
         box for todo list
         {todos.map((t) => (
           <TodoCard
-            key={t.id}
+            key={t.task}
             todo={t}
             deleteTodo={deleteTodo}
             checkTodo={checkTodo}
@@ -79,7 +81,7 @@ function App() {
       </div>
       <button
         onClick={() => {
-          addTodo('test');
+          addTodo("test");
         }}
       >
         Add

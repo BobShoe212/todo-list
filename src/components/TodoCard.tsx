@@ -1,5 +1,5 @@
-import React from 'react';
-import { Todo } from '../App';
+import React from "react";
+import { Todo } from "../App";
 
 export default function TodoCard(props: {
   todo: Todo;
@@ -7,21 +7,16 @@ export default function TodoCard(props: {
   checkTodo: (id: string) => void;
 }) {
   const handleDelete = () => {
-    props.deleteTodo(props.todo.id);
+    props.deleteTodo(props.todo.task);
   };
 
   const handleCheck = () => {
-    props.checkTodo(props.todo.id);
+    props.checkTodo(props.todo.task);
   };
 
   return (
     <div className="todocard">
-      <button
-        className={props.todo.isChecked ? 'checked' : 'unchecked'}
-        onClick={handleCheck}
-      >
-        {props.todo.isChecked ? 'true' : 'false'}
-      </button>
+      <button onClick={handleCheck}>{props.todo.isChecked ? "X" : "O"}</button>
       <div className="todocard-info">
         <h2>{props.todo.task}</h2>
         <span>
