@@ -5,43 +5,29 @@ import TodoCard from "./components/TodoCard";
 //interface for the todo items that will be stored
 export interface Todo {
   task: string;
-  dateCreated: Date;
   isChecked: boolean;
 }
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>(loadTodosFromLocalStorage());
   const [newTodo, setNewTodo] = useState<string>("");
-  //state for current todos, TODO use localstorage to store the list
-
-  //on load, gets the todos from local storage
-  /*useEffect(() => {
-    setTodos(getTodos());
-  }, []);
 
   //on change of todo list, save the new list to local storage
-  /*useEffect(() => {
-    //TODO save the todo list to local storage
-  }, [todos]);*/
-
-  const getTodos = () => {
-    //get the Todos from Local storage and return them as Todo[]
-
-    return [];
-  };
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify([...todos]));
+  }, [todos]);
 
   //add a todo item to the list given a string for the task
   const addTodo = (newTask: string) => {
     if (todos.find((t) => t.task === newTask)) {
       return;
     } else {
-      const today = new Date();
       let newTodo = {
         task: newTask,
-        dateCreated: today,
         isChecked: false,
       };
       setTodos([...todos, newTodo]);
+      setNewTodo("");
     }
   };
 
@@ -94,3 +80,17 @@ function App() {
 }
 
 export default App;
+
+function loadTodosFromLocalStorage() {
+  //get the Todos from Local storage and return them as Todo[]
+  try {
+    const loadedTodos = localStorage.getItem("todos");
+    if (loadedTodos) {
+      return JSON.parse(loadedTodos);
+    } else {
+      return [];
+    }
+  } catch {
+    return [];
+  }
+}

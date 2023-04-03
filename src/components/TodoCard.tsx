@@ -22,10 +22,6 @@ export default function TodoCard(props: {
       ></button>
       <div className="todocard-info">
         <h3>{props.todo.task}</h3>
-        <span>
-          {props.todo.dateCreated.getDate()}-{props.todo.dateCreated.getMonth()}
-          -{props.todo.dateCreated.getFullYear()}
-        </span>
       </div>
       <div className="todocard-buttons">
         <button onClick={handleDelete}>Delete</button>
