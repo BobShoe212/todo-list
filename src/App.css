@@ -1,0 +1,53 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.App {
+  background-color: lightgray;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.todoList {
+  padding: 2em;
+  border-radius: 10px;
+  background-color: rgb(77, 74, 74);
+}
+
+.title {
+  color: #888;
+  padding: 5px;
+  font-size: 32px;
+}
+
+.todocard {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+
+.todocard-info {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+button.checked {
+  width: 40px;
+  height: 20px;
+  padding: 20px;
+  background-color: white;
+}
+
+button.unchecked {
+  width: 20px;
+  height: 20px;
+  padding: 20px;
+}
