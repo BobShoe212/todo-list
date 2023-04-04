@@ -40,14 +40,20 @@
 }
 
 button.checked {
-  width: 20px;
-  height: 20px;
-  padding: 20px;
+  padding: 6px;
   background-color: white;
+  border-color: black;
+  border-width: 10px;
 }
 
 button.unchecked {
-  width: 20px;
-  height: 20px;
-  padding: 20px;
+  padding: 15px;
+}
+
+.todoInput input {
+  margin: 10px;
+}
+
+.todoInput button {
+  margin: 10px;
 }

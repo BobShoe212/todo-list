@@ -65,7 +65,7 @@ function App() {
           />
         ))}
       </div>
-      <div>
+      <div className="todoInput">
         <input id="taskInput" value={newTodo} onChange={handleChangeNewTodo} />
         <button
           onClick={() => {
