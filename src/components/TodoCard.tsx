@@ -6,25 +6,25 @@ export default function TodoCard(props: {
   deleteTodo: (id: string) => void;
   checkTodo: (id: string) => void;
 }) {
-  const handleDelete = () => {
-    props.deleteTodo(props.todo.task);
-  };
-
-  const handleCheck = () => {
-    props.checkTodo(props.todo.task);
-  };
-
   return (
     <div className="todocard">
       <button
-        onClick={handleCheck}
+        onClick={() => {
+          props.checkTodo(props.todo.task);
+        }}
         className={props.todo.isChecked ? "checked" : "unchecked"}
       ></button>
       <div className="todocard-info">
         <h3>{props.todo.task}</h3>
       </div>
       <div className="todocard-buttons">
-        <button onClick={handleDelete}>Delete</button>
+        <button
+          onClick={() => {
+            props.deleteTodo(props.todo.task);
+          }}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );
