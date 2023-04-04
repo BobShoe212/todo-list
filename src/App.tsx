@@ -65,16 +65,21 @@ function App() {
           />
         ))}
       </div>
-      <div className="todoInput">
-        <input id="taskInput" value={newTodo} onChange={handleChangeNewTodo} />
-        <button
-          onClick={() => {
-            addTodo(newTodo);
-          }}
-        >
-          Add
-        </button>
-      </div>
+      <form
+        className="todoInput"
+        onSubmit={(e) => {
+          e.preventDefault();
+          addTodo(newTodo);
+        }}
+      >
+        <input
+          id="taskInput"
+          value={newTodo}
+          placeholder="Add a new task"
+          onChange={handleChangeNewTodo}
+        />
+        <button>Add</button>
+      </form>
     </div>
   );
 }
