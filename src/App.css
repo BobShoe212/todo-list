@@ -64,6 +64,7 @@ button.deleteTodo {
 
 .todoInput input {
   margin: 10px;
+  width: 30vw;
   padding: 10px;
   border-radius: 10px;
 }
