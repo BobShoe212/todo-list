@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import TodoCard from "./components/TodoCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //interface for the todo items that will be stored
 export interface Todo {
@@ -19,7 +20,7 @@ function App() {
 
   //add a todo item to the list given a string for the task
   const addTodo = (newTask: string) => {
-    if (todos.find((t) => t.task === newTask)) {
+    if (todos.find((t) => t.task === newTask) || newTask === "") {
       return;
     } else {
       let newTodo = {
@@ -48,7 +49,14 @@ function App() {
   };
 
   const handleChangeNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTodo(e.currentTarget.value);
+    e.currentTarget.value === " "
+      ? setNewTodo("")
+      : setNewTodo(e.currentTarget.value);
+  };
+
+  const deleteChecked = () => {
+    let newTodos = todos.slice();
+    setTodos(newTodos.filter((todo) => !todo.isChecked));
   };
 
   return (
@@ -65,21 +73,26 @@ function App() {
           />
         ))}
       </div>
-      <form
-        className="todoInput"
-        onSubmit={(e) => {
-          e.preventDefault();
-          addTodo(newTodo);
-        }}
-      >
-        <input
-          id="taskInput"
-          value={newTodo}
-          placeholder="Add a new task"
-          onChange={handleChangeNewTodo}
-        />
-        <button>Add</button>
-      </form>
+      <div className="todoForm">
+        <form
+          className="todoInput"
+          onSubmit={(e) => {
+            e.preventDefault();
+            addTodo(newTodo);
+          }}
+        >
+          <input
+            id="taskInput"
+            value={newTodo}
+            placeholder="Add a new task"
+            onChange={handleChangeNewTodo}
+          />
+          <button>Add</button>
+        </form>
+        <button className="deleteTodo" onClick={deleteChecked}>
+          Delete <FontAwesomeIcon icon="check" />
+        </button>
+      </div>
     </div>
   );
 }

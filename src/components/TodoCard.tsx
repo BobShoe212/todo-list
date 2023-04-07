@@ -1,5 +1,10 @@
 import React from "react";
 import { Todo } from "../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+
+library.add(faTrashCan, faCheck);
 
 export default function TodoCard(props: {
   todo: Todo;
@@ -13,17 +18,21 @@ export default function TodoCard(props: {
           props.checkTodo(props.todo.task);
         }}
         className={props.todo.isChecked ? "checked" : "unchecked"}
-      ></button>
+      >
+        {props.todo.isChecked && <FontAwesomeIcon icon="check" />}
+      </button>
       <div className="todocard-info">
         <h3>{props.todo.task}</h3>
       </div>
       <div className="todocard-buttons">
         <button
+          className="deleteTodo"
           onClick={() => {
             props.deleteTodo(props.todo.task);
           }}
         >
-          Delete
+          {" "}
+          <FontAwesomeIcon icon="trash-can" />
         </button>
       </div>
     </div>
