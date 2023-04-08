@@ -8,7 +8,6 @@ library.add(faTrashCan, faCheck);
 
 export default function TodoCard(props: {
   todo: Todo;
-  deleteTodo: (id: string) => void;
   checkTodo: (id: string) => void;
 }) {
   return (
@@ -28,12 +27,6 @@ export default function TodoCard(props: {
         <div className="checkbox">
           {props.todo.isChecked && <FontAwesomeIcon icon="check" />}
         </div>
-      </button>
-      <button
-        className="deleteTodo"
-        onClick={() => props.deleteTodo(props.todo.task)}
-      >
-        <FontAwesomeIcon icon="trash-can" />
       </button>
     </div>
   );

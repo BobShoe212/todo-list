@@ -40,14 +40,6 @@ function App() {
     setTodos([...newTodos]);
   };
 
-  //delete a todo on the list given the id of it
-  const deleteTodo = (deleteTask: string) => {
-    let newTodos = todos.slice();
-    const deleteIndex = newTodos.findIndex((t) => t.task === deleteTask);
-    newTodos.splice(deleteIndex, 1);
-    setTodos(newTodos);
-  };
-
   const handleChangeNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.currentTarget.value === " "
       ? setNewTodo("")
@@ -65,12 +57,7 @@ function App() {
       <div className="todoList">
         {todos.length === 0 && "Nothing to do!"}
         {todos.map((t) => (
-          <TodoCard
-            key={t.task}
-            todo={t}
-            deleteTodo={deleteTodo}
-            checkTodo={checkTodo}
-          />
+          <TodoCard key={t.task} todo={t} checkTodo={checkTodo} />
         ))}
       </div>
       <div className="todoForm">
