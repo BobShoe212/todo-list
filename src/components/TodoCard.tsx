@@ -14,27 +14,27 @@ export default function TodoCard(props: {
   return (
     <div className="todocard">
       <button
+        className="todo"
+        id={props.todo.task}
         onClick={() => {
           props.checkTodo(props.todo.task);
         }}
-        className={props.todo.isChecked ? "checked" : "unchecked"}
       >
-        {props.todo.isChecked && <FontAwesomeIcon icon="check" />}
+        {props.todo.isChecked ? (
+          <del>{props.todo.task}</del>
+        ) : (
+          <>{props.todo.task}</>
+        )}
+        <div className="checkbox">
+          {props.todo.isChecked && <FontAwesomeIcon icon="check" />}
+        </div>
       </button>
-      <div className="todocard-info">
-        <h3>{props.todo.task}</h3>
-      </div>
-      <div className="todocard-buttons">
-        <button
-          className="deleteTodo"
-          onClick={() => {
-            props.deleteTodo(props.todo.task);
-          }}
-        >
-          {" "}
-          <FontAwesomeIcon icon="trash-can" />
-        </button>
-      </div>
+      <button
+        className="deleteTodo"
+        onClick={() => props.deleteTodo(props.todo.task)}
+      >
+        <FontAwesomeIcon icon="trash-can" />
+      </button>
     </div>
   );
 }

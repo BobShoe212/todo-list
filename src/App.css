@@ -17,6 +17,7 @@
   padding: 10px;
   border-radius: 10px;
   background-color: rgb(77, 74, 74);
+  width: 90%;
 }
 
 .title {
@@ -29,26 +30,29 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: left;
 }
 
-.todocard-info {
-  min-width: 200px;
+.todo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  text-align: left;
+  border: 2px solid;
+  border-color: rgb(27, 27, 27);
+  margin: 5px;
+  border-radius: 15x;
+  background-color: rgb(44, 42, 42);
 }
 
-button.checked {
-  padding-left: 3px;
-  padding-right: 3px;
-  padding-top: 0.5px;
-  padding-bottom: 0.5px;
-}
-
-button.unchecked {
-  padding: 10px;
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid grey;
+  border-radius: 10px;
+  width: 30px;
+  height: 30px;
 }
 
 button.deleteTodo {
