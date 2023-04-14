@@ -1,101 +1,29 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import "./App.css";
-import TodoCard from "./components/TodoCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  RedirectToSignIn,
+} from "@clerk/clerk-react";
+import TodoList from "./components/TodoList";
 
-//interface for the todo items that will be stored
-export interface Todo {
-  task: string;
-  isChecked: boolean;
-}
+// Get the Publishable Key from the environment
+const clerk_pub_key = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string;
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(loadTodosFromLocalStorage());
-  const [newTodo, setNewTodo] = useState<string>("");
-
-  //on change of todo list, save the new list to local storage
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify([...todos]));
-  }, [todos]);
-
-  //add a todo item to the list given a string for the task
-  const addTodo = (newTask: string) => {
-    if (todos.find((t) => t.task === newTask) || newTask === "") {
-      return;
-    } else {
-      let newTodo = {
-        task: newTask,
-        isChecked: false,
-      };
-      setTodos([...todos, newTodo]);
-      setNewTodo("");
-    }
-  };
-
-  //toggle checked on a todo on the list, given the task string to find it.
-  const checkTodo = (checkTask: string) => {
-    let newTodos = todos.slice();
-    const checkIndex = todos.findIndex((t) => t.task === checkTask);
-    newTodos[checkIndex].isChecked = !newTodos[checkIndex].isChecked;
-    setTodos([...newTodos]);
-  };
-
-  const handleChangeNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.currentTarget.value === " "
-      ? setNewTodo("")
-      : setNewTodo(e.currentTarget.value);
-  };
-
-  const deleteChecked = () => {
-    let newTodos = todos.slice();
-    setTodos(newTodos.filter((todo) => !todo.isChecked));
-  };
-
   return (
-    <div className="App">
-      <div className="title">To Do List</div>
-      <div className="todoList">
-        {todos.length === 0 && "Nothing to do!"}
-        {todos.map((t) => (
-          <TodoCard key={t.task} todo={t} checkTodo={checkTodo} />
-        ))}
-      </div>
-      <div className="todoForm">
-        <form
-          className="todoInput"
-          onSubmit={(e) => {
-            e.preventDefault();
-            addTodo(newTodo);
-          }}
-        >
-          <input
-            id="taskInput"
-            value={newTodo}
-            placeholder="Add a new task"
-            onChange={handleChangeNewTodo}
-          />
-          <button>Add</button>
-        </form>
-        <button className="deleteTodo" onClick={deleteChecked}>
-          Delete <FontAwesomeIcon icon="check" />
-        </button>
-      </div>
-    </div>
+    // Wrap your entire app with ClerkProvider
+    // Don't forget to pass the frontendApi prop
+    <ClerkProvider publishableKey={clerk_pub_key}>
+      <SignedIn>
+        <TodoList />
+      </SignedIn>
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </ClerkProvider>
   );
 }
 
 export default App;
-
-function loadTodosFromLocalStorage() {
-  //get the Todos from Local storage and return them as Todo[]
-  try {
-    const loadedTodos = localStorage.getItem("todos");
-    if (loadedTodos) {
-      return JSON.parse(loadedTodos);
-    } else {
-      return [];
-    }
-  } catch {
-    return [];
-  }
-}

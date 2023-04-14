@@ -12,6 +12,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
+  gap: 10px;
+  color: black;
 }
 .todoList {
   padding: 5px;
