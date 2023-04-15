@@ -1,0 +1,10 @@
+import { Request, Response } from "express";
+import User from "../models/user";
+
+//find and send the list of todos from the mongo db by the uid sent in the request
+export async function getUserTodosController(req: Request, res: Response) {
+  const user = await User.find().where(
+    (user: { uid: string }) => user.uid === req.body.uid
+  );
+  res.json(user);
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Todo } from "../App";
+import { Todo } from "./TodoList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
