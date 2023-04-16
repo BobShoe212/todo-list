@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import TodoCard from "./TodoCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import loadTodosFromLocalStorage from "../actions/loadTodos";
+import fetchUserTodos from "../api/loadTodos";
 import { useUser, UserButton } from "@clerk/clerk-react";
+import saveUserTodos from "../api/saveTodos";
 
 //interface for the todo items that will be stored
 export interface Todo {
@@ -10,16 +11,26 @@ export interface Todo {
   isChecked: boolean;
 }
 
+export interface UserType {
+  uid: String;
+  todos: [Todo];
+}
+
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(loadTodosFromLocalStorage());
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>("");
+  const { isLoaded, isSignedIn, user } = useUser();
 
-  const { user } = useUser();
-
-  //on change of todo list, save the new list to local storage
+  //on change of isSignedIn, load the todo list from local storage
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify([...todos]));
-  }, [todos]);
+    async function fetchTodos() {
+      if (isLoaded && isSignedIn && !!user) {
+        const userData = await fetchUserTodos(user.id);
+        setTodos(userData ?? []);
+      }
+    }
+    fetchTodos();
+  }, [isSignedIn]);
 
   //add a todo item to the list given a string for the task
   const addTodo = (newTask: string) => {
@@ -32,6 +43,7 @@ function App() {
       };
       setTodos([...todos, newTodo]);
       setNewTodo("");
+      saveUserTodos([...todos, newTodo], user!.id);
     }
   };
 
@@ -41,6 +53,7 @@ function App() {
     const checkIndex = todos.findIndex((t) => t.task === checkTask);
     newTodos[checkIndex].isChecked = !newTodos[checkIndex].isChecked;
     setTodos([...newTodos]);
+    saveUserTodos([...newTodos], user!.id);
   };
 
   const handleChangeNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +64,9 @@ function App() {
 
   const deleteChecked = () => {
     let newTodos = todos.slice();
-    setTodos(newTodos.filter((todo) => !todo.isChecked));
+    let filteredTodos = newTodos.filter((todo) => !todo.isChecked);
+    setTodos([...filteredTodos]);
+    saveUserTodos([...filteredTodos], user!.id);
   };
 
   return (
