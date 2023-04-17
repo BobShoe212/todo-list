@@ -5,6 +5,5 @@ import User from "../models/user";
 export async function getUserTodosController(req: Request, res: Response) {
   const { userId } = req.params;
   const user = await User.findOne({ uid: userId });
-  console.log(user);
   res.send(JSON.stringify(user));
 }

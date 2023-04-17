@@ -19,14 +19,28 @@ export interface UserType {
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>("");
+  const [isOnline, setIsOnline] = useState(true);
   const { isLoaded, isSignedIn, user } = useUser();
 
   //on change of isSignedIn, load the todo list from local storage
   useEffect(() => {
     async function fetchTodos() {
       if (isLoaded && isSignedIn && !!user) {
-        const userData = await fetchUserTodos(user.id);
-        setTodos(userData ?? []);
+        //check if there is anything in local storage. add those to the list, needs to then delete the local storage.
+        const localData = JSON.parse(localStorage.getItem(user.id)!);
+        localStorage.clear();
+
+        const userData = await fetchUserTodos(user.id).catch((e) => {
+          console.log(e);
+          setIsOnline(false);
+          setTodos([...localData]);
+        });
+
+        //add any todos from the local storage to the list
+        !!localData ? setTodos(localData) : setTodos(userData);
+        //todo Try to compare userData and localData and return a combined list.
+
+        setIsOnline(true);
       }
     }
     fetchTodos();
@@ -43,7 +57,11 @@ function App() {
       };
       setTodos([...todos, newTodo]);
       setNewTodo("");
-      saveUserTodos([...todos, newTodo], user!.id);
+      saveUserTodos([...todos, newTodo], user!.id).catch((e) => {
+        console.log(e);
+        setIsOnline(false);
+      });
+      setIsOnline(true);
     }
   };
 
@@ -53,7 +71,11 @@ function App() {
     const checkIndex = todos.findIndex((t) => t.task === checkTask);
     newTodos[checkIndex].isChecked = !newTodos[checkIndex].isChecked;
     setTodos([...newTodos]);
-    saveUserTodos([...newTodos], user!.id);
+    saveUserTodos([...newTodos], user!.id).catch((e) => {
+      console.log(e);
+      setIsOnline(false);
+    });
+    setIsOnline(true);
   };
 
   const handleChangeNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +88,18 @@ function App() {
     let newTodos = todos.slice();
     let filteredTodos = newTodos.filter((todo) => !todo.isChecked);
     setTodos([...filteredTodos]);
-    saveUserTodos([...filteredTodos], user!.id);
+    saveUserTodos([...filteredTodos], user!.id).catch((e) => {
+      console.log(e);
+      setIsOnline(false);
+    });
+    setIsOnline(true);
   };
 
   return (
     <div className="App">
       <div className="navbar">
         <UserButton />
-        {user ? <>Hello, {user.username}!</> : null}
+        {user ? <>Hello, {user.firstName}!</> : null}
       </div>
       <div className="title">To Do List</div>
       <div className="todoList">

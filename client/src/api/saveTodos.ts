@@ -1,4 +1,3 @@
-import { useUser } from "@clerk/clerk-react";
 import { Todo } from "../components/TodoList";
 import { API_URL } from "./config";
 
@@ -11,5 +10,11 @@ export default async function saveUserTodos(newTodos: Todo[], userId: string) {
     headers: {
       "Content-type": "application/json",
     },
+  }).catch((e) => {
+    console.log(e);
+    localStorage.setItem(userId, JSON.stringify([...newTodos]));
   });
+  localStorage.clear();
 }
+
+// save to localstorage on fetch().catch(save to localstorage)

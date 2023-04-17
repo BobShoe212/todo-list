@@ -8,6 +8,5 @@ export default async function fetchUserTodos(uid: string) {
     },
   })
     .then((response) => response.json())
-    .then((jsonres) => jsonres.todos)
-    .catch((err) => console.log(err));
+    .then((jsonres) => jsonres.todos);
 }
